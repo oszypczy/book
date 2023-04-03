@@ -1,0 +1,36 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe kompiluj aktywny plik",
+            // "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                //Wersja dla Linuxa:
+                "${workspaceFolder}/*.cpp",
+                //trzeba również dołączyć pliki znajdujące się "poziom wyżej", ale bez funkcji main (dlatego nie ma tu ../*.cpp, tylko wskazany jest konkretny plik)
+                "${workspaceFolder}/../date.cpp",
+                "${workspaceFolder}/../chapter.cpp",
+                "${workspaceFolder}/../author.cpp",
+                "-o",
+                "${workspaceFolder}/${workspaceFolderBasename}",
+                "-Wall",
+                "-Werror"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Zadanie wygenerowane przez debuger."
+        }
+    ],
+    "version": "2.0.0"
+}
