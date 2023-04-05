@@ -34,11 +34,11 @@ class Book{
         bool operator<=(const Book& secondBook) const;
         bool operator>=(const Book& secondBook) const;
         uint getTotalPages() const;
-        bool findChapterByKey(std::string key) const;
+        short findChapterPosition(std::string key) const;
         ushort getNumChaptersWithKey(std::string key) const;
         void sortChaptersbyName();
         void sortChaptersbyNumber();
-        void addChapter(Chapter newChapter);
+        void addChapter(ushort newNumber, uint newPages, std::string newTitle);
         void removeChapter(std::string key);
-        void editChapter(std::string key, ushort newNumber, uint newPages, std::string newTitle);
+        void editChapter(std::string key, ushort newNumber = 0, uint newPages = 0, std::string newTitle = "");
 };

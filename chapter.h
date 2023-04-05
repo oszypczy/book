@@ -13,7 +13,7 @@ class Chapter{
         uint getChapterPages() const;
         std::string getChapterTitle() const;
         void setChapterNumber(ushort newNumber);
-        void setChpaterPages(uint newPages);
+        void setChapterPages(uint newPages);
         void setChapterTitle(std::string newTitle);
         Chapter& operator++();
         Chapter operator++(int);

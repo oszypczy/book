@@ -129,3 +129,61 @@ uint Book::getTotalPages() const{
     return std::accumulate(bookChapters.begin(), bookChapters.end(), 0,
         [](uint total, const Chapter& chapter) { return total + chapter.getChapterPages(); });
 }
+
+short Book::findChapterPosition(std::string key) const {
+    for (size_t i = 0; i < bookChapters.size(); i++) {
+        if (bookChapters[i].getChapterTitle().find(key) != std::string::npos) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void Book::editChapter(std::string key, ushort newNumber, uint newPages, std::string newTitle){
+    short chapterPosition = findChapterPosition(key);
+    if (chapterPosition == -1){
+        throw std::domain_error("Could not find chapter by given key!");
+    } else {
+        Chapter& chapter = bookChapters[chapterPosition];
+        ushort old_number = chapter.getChapterNumber();
+        chapter.setChapterTitle(newTitle != "" ? newTitle : chapter.getChapterTitle());
+        chapter.setChapterPages(newPages != 0 ? newPages : chapter.getChapterPages());
+        chapter.setChapterNumber(newNumber != 0 ? newNumber : old_number);
+        try{
+            checkData(bookTitle, bookAuthors, ISBN, bookPublisher, releasePlace, bookChapters);
+        } catch (const std::invalid_argument&) {
+            chapter.setChapterNumber(old_number);
+        }
+    }
+}
+
+void Book::removeChapter(std::string key){
+    short chapterPosition = findChapterPosition(key);
+    if (chapterPosition == -1){
+        throw std::domain_error("Could not remove chapter that does not exist!");
+    } else {
+        bookChapters.erase(bookChapters.begin() + chapterPosition);
+    }
+}
+
+void Book::addChapter(ushort newNumber, uint newPages, std::string newTitle){
+    if (findChapterPosition(newTitle) != -1){
+       throw std::domain_error("Cannot dupicate chapters!");
+    }
+    Chapter chapter(newNumber, newPages, newTitle);
+    bookChapters.push_back(chapter);
+    try{
+        checkData(bookTitle, bookAuthors, ISBN, bookPublisher, releasePlace, bookChapters);
+    } catch (const std::invalid_argument&) {
+        removeChapter(newTitle);
+    }
+}
+
+ushort Book::getNumChaptersWithKey(std::string key) const{
+    ushort result = 0;
+    for (auto& chapter : bookChapters){
+        if (chapter.getChapterTitle().find(key) != std::string::npos)
+            result++;
+    }
+    return result;
+}

@@ -34,7 +34,7 @@ void Chapter::setChapterNumber(ushort newNumber){
     chapterNumber = newNumber;
 }
 
-void Chapter::setChpaterPages(uint newPages){
+void Chapter::setChapterPages(uint newPages){
     checkData(chapterNumber, newPages, chapterTitle);
     chapterPages = newPages;
 }
