@@ -14,6 +14,7 @@
                 "${workspaceFolder}/../date.cpp",
                 "${workspaceFolder}/../chapter.cpp",
                 "${workspaceFolder}/../author.cpp",
+                "${workspaceFolder}/../book.cpp",
                 "-o",
                 "${workspaceFolder}/${workspaceFolderBasename}",
                 "-Wall",

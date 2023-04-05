@@ -19,10 +19,10 @@ class Chapter{
         Chapter operator++(int);
         Chapter& operator--();
         Chapter operator--(int);
-        bool operator==(const Chapter& second_argument) const;
-        bool operator!=(const Chapter& second_argument) const;
-        bool operator<(const Chapter& second_argument) const;
-        bool operator>(const Chapter& second_argument) const;
-        bool operator<=(const Chapter& second_argument) const;
-        bool operator>=(const Chapter& second_argument) const;
+        bool operator==(const Chapter& secondChapter) const;
+        bool operator!=(const Chapter& secondChapter) const;
+        bool operator<(const Chapter& secondChapter) const;
+        bool operator>(const Chapter& secondChapter) const;
+        bool operator<=(const Chapter& secondChapter) const;
+        bool operator>=(const Chapter& secondChapter) const;
 };
