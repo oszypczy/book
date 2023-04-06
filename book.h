@@ -23,6 +23,7 @@ class Book{
         unsigned long getISBN() const;
         std::string getPublisher() const;
         Date getDate() const;
+        std::vector<Chapter> getChapters() const;
         std::string getReleasePlace() const;
         void setTitle(std::string newTitle);
         void setISBN(unsigned long newISBN);
@@ -36,9 +37,16 @@ class Book{
         uint getTotalPages() const;
         short findChapterPosition(std::string key) const;
         ushort getNumChaptersWithKey(std::string key) const;
-        void sortChaptersbyName();
+        void sortChaptersbyTitle();
         void sortChaptersbyNumber();
         void addChapter(ushort newNumber, uint newPages, std::string newTitle);
         void removeChapter(std::string key);
         void editChapter(std::string key, ushort newNumber = 0, uint newPages = 0, std::string newTitle = "");
+    friend std::ostream& operator<<(std::ostream& os, const Book& book);
 };
+
+// Czy wydawca to ma być też osobna klasa?
+// Czy miejsce wydania to też ma być osobna klasa?
+// Przeciążyć operatory "<<"
+// We wszystkich klasach przeciążyć operatory "!=" , "==" ? (treść zadania inna niż pdf)?
+// Wczytywanie z pliku

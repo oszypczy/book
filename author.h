@@ -12,4 +12,5 @@ class Author{
         std::string getSurname() const;
         void setName(std::string newName);
         void setSurname(std::string newSurname);
+    friend std::ostream& operator<<(std::ostream& os, const Author& author);
 };

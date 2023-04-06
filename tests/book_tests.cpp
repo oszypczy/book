@@ -144,4 +144,37 @@ TEST_CASE("book simple tests", "[book]")
         CHECK(book2.getNumChaptersWithKey("KKKKK") == 0);
         CHECK(book1.getNumChaptersWithKey("KD") == 1);
     }
+
+    SECTION("testing sorting chapters by their number")
+    {
+        CHECK(book1.getChapters().size() == 2);
+        book1.addChapter(20, 100, "Chapter 20: AA");
+        book1.addChapter(15, 100, "Chapter 15: BB");
+        book1.addChapter(7, 100, "Chapter 7: CC");
+        CHECK(book1.getChapters().size() == 5);
+        CHECK(book1.findChapterPosition("Chapter 1") == 0);
+        CHECK(book1.findChapterPosition("Chapter 2") == 1);
+        CHECK(book1.findChapterPosition("Chapter 7") == 2);
+        CHECK(book1.findChapterPosition("Chapter 15") == 3);
+        CHECK(book1.findChapterPosition("Chapter 20") == 4);
+    }
+
+    SECTION("testing sorting chapters by their title")
+    {
+        CHECK(book1.getChapters().size() == 2);
+        book1.removeChapter("Chapter 1");
+        book1.removeChapter("Chapter 2");
+        CHECK(book1.getChapters().size() == 0);
+        book1.addChapter(3, 100, "def");
+        book1.addChapter(4, 100, "opr");
+        book1.addChapter(5, 100, "abc");
+        CHECK(book1.getChapters().size() == 3);
+        CHECK(book1.findChapterPosition("def") == 0);
+        CHECK(book1.findChapterPosition("opr") == 1);
+        CHECK(book1.findChapterPosition("abc") == 2);
+        book1.sortChaptersbyTitle();
+        CHECK(book1.findChapterPosition("abc") == 0);
+        CHECK(book1.findChapterPosition("def") == 1);
+        CHECK(book1.findChapterPosition("opr") == 2);
+    }
 }

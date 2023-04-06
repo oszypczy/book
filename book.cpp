@@ -1,6 +1,7 @@
 #include "book.h"
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 
 Book::Book(std::string newTitle, std::vector<Author> newAuthors, unsigned long newISBN, std::string newPublisher, Date newDate, std::string newPlace, std::vector<Chapter> newChapters){
     checkData(newTitle, newAuthors, newISBN, newPublisher, newPlace, newChapters);
@@ -11,6 +12,7 @@ Book::Book(std::string newTitle, std::vector<Author> newAuthors, unsigned long n
     releaseDate = newDate;
     releasePlace = newPlace;
     bookChapters = newChapters;
+    sortChaptersbyNumber();
 }
 
 void Book::checkData(std::string newTitle, std::vector<Author> newAuthors, unsigned long newISBN, std::string newPublisher, std::string newPlace, std::vector<Chapter> newChapters) const {
@@ -81,6 +83,10 @@ std::string Book::getReleasePlace() const{
     return releasePlace;
 }
 
+std::vector<Chapter> Book::getChapters() const{
+    return bookChapters;
+}
+
 void Book::setTitle(std::string newTitle){
     checkData(newTitle, bookAuthors, ISBN, bookPublisher, releasePlace, bookChapters);
     bookTitle = newTitle;
@@ -140,11 +146,10 @@ short Book::findChapterPosition(std::string key) const {
 }
 
 void Book::editChapter(std::string key, ushort newNumber, uint newPages, std::string newTitle){
-    short chapterPosition = findChapterPosition(key);
-    if (chapterPosition == -1){
+    if (findChapterPosition(key) == -1){
         throw std::domain_error("Could not find chapter by given key!");
     } else {
-        Chapter& chapter = bookChapters[chapterPosition];
+        Chapter& chapter = bookChapters[findChapterPosition(key)];
         ushort old_number = chapter.getChapterNumber();
         chapter.setChapterTitle(newTitle != "" ? newTitle : chapter.getChapterTitle());
         chapter.setChapterPages(newPages != 0 ? newPages : chapter.getChapterPages());
@@ -155,14 +160,14 @@ void Book::editChapter(std::string key, ushort newNumber, uint newPages, std::st
             chapter.setChapterNumber(old_number);
         }
     }
+    sortChaptersbyNumber();
 }
 
 void Book::removeChapter(std::string key){
-    short chapterPosition = findChapterPosition(key);
-    if (chapterPosition == -1){
+    if (findChapterPosition(key) == -1){
         throw std::domain_error("Could not remove chapter that does not exist!");
     } else {
-        bookChapters.erase(bookChapters.begin() + chapterPosition);
+        bookChapters.erase(bookChapters.begin() + findChapterPosition(key));
     }
 }
 
@@ -177,6 +182,7 @@ void Book::addChapter(ushort newNumber, uint newPages, std::string newTitle){
     } catch (const std::invalid_argument&) {
         removeChapter(newTitle);
     }
+    sortChaptersbyNumber();
 }
 
 ushort Book::getNumChaptersWithKey(std::string key) const{
@@ -186,4 +192,18 @@ ushort Book::getNumChaptersWithKey(std::string key) const{
             result++;
     }
     return result;
+}
+
+void Book::sortChaptersbyNumber(){
+    std::sort(bookChapters.begin(), bookChapters.end(),
+        [](const Chapter& chapter1, const Chapter& chapter2) {return chapter1.getChapterNumber() < chapter2.getChapterNumber(); });
+}
+
+void Book::sortChaptersbyTitle(){
+    std::sort(bookChapters.begin(), bookChapters.end(),
+        [](const Chapter& chapter1, const Chapter& chapter2) {return chapter1.getChapterTitle() < chapter2.getChapterTitle(); });
+}
+
+std::ostream& operator<<(std::ostream& os, const Book& book){
+    return os;
 }

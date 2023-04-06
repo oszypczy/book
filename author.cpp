@@ -1,4 +1,5 @@
 #include "author.h"
+#include <iostream>
 #include <stdexcept>
 
 Author::Author(std::string newName, std::string newSurname) : name(newName), surname(newSurname){
@@ -30,4 +31,9 @@ void Author::setName(std::string newName) {
 void Author::setSurname(std::string newSurname) {
     checkData(name, newSurname);
     surname = newSurname;
+}
+
+std::ostream& operator<<(std::ostream& os, const Author& author){
+    os << "Author: " << author.name << " " << author.surname;
+    return os;
 }
