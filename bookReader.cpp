@@ -76,6 +76,9 @@ Book BookReader::getBook() {
                 bookChapters.push_back(chapter);
             }
         }
+        else {
+            std::cerr << "Error: unknown key " << key << std::endl;
+        }
     }
     return Book(bookTitle, bookAuthors, ISBN, bookPublisher, releaseDate, releasePlace, bookChapters);
 }

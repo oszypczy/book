@@ -48,4 +48,3 @@ class Book{
 // Czy wydawca to ma być też osobna klasa?
 // Czy miejsce wydania to też ma być osobna klasa?
 // We wszystkich klasach przeciążyć operatory "!=" , "==" ? (treść zadania inna niż pdf)?
-// Wczytywanie z pliku
