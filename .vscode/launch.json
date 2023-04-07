@@ -12,7 +12,7 @@
             // "program": "${workspaceFolder}\\${workspaceFolderBasename}.exe",
             //Wersja dla Linuxa:
             "program": "${workspaceFolder}/${workspaceFolderBasename}",
-            "args": ["TVN", "3", "5", "2003", "7", "20", "Uwaga!", "Kuchenne Rewolucje"], //tu należy podać argumenty wywołania programu
+            "args": ["book.txt"], //tu należy podać argumenty wywołania programu
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
