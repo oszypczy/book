@@ -186,12 +186,11 @@ void Book::addChapter(ushort newNumber, uint newPages, std::string newTitle){
 }
 
 ushort Book::getNumChaptersWithKey(std::string key) const{
-    ushort result = 0;
-    for (auto& chapter : bookChapters){
-        if (chapter.getChapterTitle().find(key) != std::string::npos)
-            result++;
-    }
-    return result;
+    return std::accumulate(bookChapters.begin(), bookChapters.end(), 0,
+        [key](ushort result, const Chapter& chapter) {
+            return result + (chapter.getChapterTitle().find(key) != std::string::npos);
+        }
+    );
 }
 
 void Book::sortChaptersbyNumber(){
@@ -205,5 +204,17 @@ void Book::sortChaptersbyTitle(){
 }
 
 std::ostream& operator<<(std::ostream& os, const Book& book){
+    os << "Book Title: " << book.bookTitle << "\n"
+       << "Book ISBN: " << book.ISBN << "\n";
+    for (auto& author : book.bookAuthors){
+        os << author << "\n";
+    }
+    os << "Book Publisher: " << book.bookPublisher << "\n"
+       << "Book release place: " << book.releasePlace << "\n"
+       << "Book release date: " << book.getDate().str() << "\n"
+       << "Chapters: " << "\n";
+    for (auto& chapter : book.bookChapters){
+        os << "\t" << chapter << "\n";
+    }
     return os;
 }

@@ -1,4 +1,5 @@
 #include "chapter.h"
+#include <iostream>
 #include <stdexcept>
 
 Chapter::Chapter(ushort newNumber, uint newPages, std::string newTitle) : chapterNumber(newNumber), chapterPages(newPages), chapterTitle(newTitle){
@@ -89,4 +90,9 @@ bool Chapter::operator<=(const Chapter& second_argument) const{
 
 bool Chapter::operator>=(const Chapter& second_argument) const{
     return !(chapterPages < second_argument.chapterPages);
+}
+
+std::ostream& operator<<(std::ostream& os, const Chapter& chapter){
+    os << "Chapter: " << chapter.chapterNumber << ". " << chapter.chapterTitle;
+    return os;
 }

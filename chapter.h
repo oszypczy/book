@@ -25,4 +25,5 @@ class Chapter{
         bool operator>(const Chapter& secondChapter) const;
         bool operator<=(const Chapter& secondChapter) const;
         bool operator>=(const Chapter& secondChapter) const;
+    friend std::ostream& operator<<(std::ostream& os, const Chapter& chapter);
 };
