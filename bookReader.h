@@ -7,9 +7,10 @@
 
 class BookReader{
     private:
-        std::ifstream file_;
+        std::string fileName;
+        std::ifstream file;
+        void checkFile(std::string newFileName);
     public:
-        BookReader(const std::string& filename);
-        ~BookReader();
+        BookReader(std::string filename);
         Book getBook();
 };

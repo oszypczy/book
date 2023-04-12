@@ -10,7 +10,6 @@ int main(int argc, char** argv){
     }
     std::string fileName = argv[1];
     BookReader bookReader(fileName);
-    Book book = bookReader.getBook();
-    std::cout << book << std::endl;
+    std::cout << bookReader.getBook() << std::endl;
     return 0;
 }
