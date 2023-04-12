@@ -20,10 +20,11 @@ TEST_CASE("book simple tests", "[book]")
     CHECK(book1.getTotalPages() == 30);
 
     Date date2(10, Month::May, 1999);
+    Author author2("Jack", "Gadowsky");
     Chapter chapter3(3, 30, "Chapter 3: AA");
     Chapter chapter4(4, 45, "Chapter 4: BB");
 
-    Book book2("Biblia", {}, 9783161484100, "JMS", date2, "Toruń", {chapter3, chapter4});
+    Book book2("Biblia", {author2}, 9783161484100, "JMS", date2, "Toruń", {chapter3, chapter4});
     CHECK(book2.getTitle() == "Biblia");
     CHECK(book2.getISBN() == 9783161484100);
     CHECK(book2.getPublisher() == "JMS");
@@ -68,7 +69,7 @@ TEST_CASE("book simple tests", "[book]")
         CHECK(book1.getReleasePlace() == "Kraków");
     }
 
-    SECTION("testing operators")
+    SECTION("testing operators <, >, <=, >=")
     {
         CHECK((book1 < book2) == true);
         CHECK((book1 <= book2) == true);
@@ -76,65 +77,91 @@ TEST_CASE("book simple tests", "[book]")
         CHECK((book2 >= book1) == true);
     }
 
-    SECTION("testing finding position of chapter by key - whole title")
+    SECTION("testing operators ==, !=")
     {
-        CHECK(book1.findChapterPosition("Chapter 1: JD") == 0);
-        CHECK(book1.findChapterPosition("AAA") == -1);
+        CHECK((book1 == book1) == true);
+        CHECK((book1 != book1) == false);
+    }
+
+    SECTION("testing finding chapter by key - whole title")
+    {
+        auto it1 = book1.findChapterbyTitle("Chapter 1: JD");
+        CHECK((*it1).getChapterTitle() == "Chapter 1: JD");
+        CHECK((*it1).getChapterPages() == 10);
+        CHECK((*it1).getChapterNumber() == 1);
+        auto it2 = book1.findChapterbyTitle("AAA");
+        CHECK(it2 == book1.getChapters().end());
     }
 
     SECTION("testing finding position of chapter by key - fragments of title")
     {
-        CHECK(book1.findChapterPosition("JD") == 0);
-        CHECK(book2.findChapterPosition("BB") == 1);
+        auto it1 = book1.findChapterbyTitle("KD");
+        CHECK((*it1).getChapterTitle() == "Chapter 2: KD");
+        CHECK((*it1).getChapterPages() == 20);
+        CHECK((*it1).getChapterNumber() == 2);
+    }
+
+    SECTION("testing finding chapter by number")
+    {
+        auto it1 = book1.findChapterbyNumber(1);
+        CHECK((*it1).getChapterTitle() == "Chapter 1: JD");
+        CHECK((*it1).getChapterPages() == 10);
+        CHECK((*it1).getChapterNumber() == 1);
+        auto it2 = book1.findChapterbyNumber(3);
+        CHECK(it2 == book1.getChapters().end());
     }
 
     SECTION("testing editing chapter")
     {
-        book1.editChapter("Chapter 1: JD", 0, 50, "");
-        CHECK(book1.findChapterPosition("JD") == 0);
+        CHECK(book1.getTotalPages() == 30);
+        book1.editChapter("Chapter 1: JD", 1, 50, "Chapter 1: JD");
+        auto it = book1.findChapterbyTitle("Chapter 1: JD");
+        CHECK((*it).getChapterTitle() == "Chapter 1: JD");
+        CHECK((*it).getChapterPages() == 50);
+        CHECK((*it).getChapterNumber() == 1);
         CHECK(book1.getTotalPages() == 70);
     }
 
     SECTION("testing editing chapter that does not exist")
     {
-        CHECK_THROWS_MATCHES(book2.editChapter("Chapter 1: JD", 3, 50, "ABC"), std::domain_error, Catch::Matchers::Message("Could not find chapter by given key!"));
-        CHECK(book2.findChapterPosition("Chapter 3: AA") == 0);
-        CHECK(book2.findChapterPosition("Chapter 4: BB") == 1);
+        CHECK(book2.getTotalPages() == 75);
+        CHECK_THROWS_MATCHES(book2.editChapter("Chapter 1: JD", 3, 50, "ABC"), std::invalid_argument, Catch::Matchers::Message("Could not find chapter by given key!"));
         CHECK(book2.getTotalPages() == 75);
     }
 
     SECTION("testing removing chapter")
     {
+        CHECK(book2.getTotalPages() == 75);
         CHECK_THROWS_MATCHES(book2.removeChapter("Chapter 5"), std::domain_error, Catch::Matchers::Message("Could not remove chapter that does not exist!"));
         book2.removeChapter("Chapter 4");
-        CHECK(book2.findChapterPosition("Chapter 4") == -1);
-        CHECK(book2.findChapterPosition("Chapter 5") == -1);
+        auto it1 = book1.findChapterbyTitle("Chapter 4");
+        CHECK(it1 == book1.getChapters().end());
         CHECK(book2.getTotalPages() == 30);
     }
 
     SECTION("testing adding chapter")
     {
         book2.addChapter(5, 200, "Chapter 5: CC");
-        CHECK(book2.findChapterPosition("Chapter 3: AA") == 0);
-        CHECK(book2.findChapterPosition("Chapter 4: BB") == 1);
-        CHECK(book2.findChapterPosition("Chapter 5: CC") == 2);
+        auto it = book2.findChapterbyTitle("Chapter 5: CC");
+        CHECK((*it).getChapterTitle() == "Chapter 5: CC");
+        CHECK((*it).getChapterPages() == 200);
+        CHECK((*it).getChapterNumber() == 5);
         CHECK(book2.getTotalPages() == 275);
     }
 
     SECTION("testing adding chapter that already exists")
     {
-        CHECK_THROWS_MATCHES(book2.addChapter(5, 200, "Chapter 3: AA"), std::domain_error, Catch::Matchers::Message("Cannot dupicate chapters!"));
-        CHECK(book2.findChapterPosition("Chapter 3: AA") == 0);
-        CHECK(book2.findChapterPosition("Chapter 4: BB") == 1);
+        CHECK(book2.getTotalPages() == 75);
+        CHECK_THROWS_MATCHES(book2.addChapter(5, 200, "Chapter 3: AA"), std::invalid_argument, Catch::Matchers::Message("Cannot dupicate chapters!"));
         CHECK(book2.getTotalPages() == 75);
     }
 
     SECTION("testing adding chapter - duplicating chapter numbers")
     {
-        book2.addChapter(4, 200, "Chapter 4: CC");
-        CHECK(book2.findChapterPosition("Chapter 3: AA") == 0);
-        CHECK(book2.findChapterPosition("Chapter 4: BB") == 1);
-        CHECK(book2.findChapterPosition("Chapter 4: CC") == -1);
+        CHECK(book2.getTotalPages() == 75);
+        CHECK_THROWS_MATCHES(book2.addChapter(4, 200, "Chapter 4: CC"), std::invalid_argument, Catch::Matchers::Message("Two chapters cannot have the same number!"));
+        auto it1 = book2.findChapterbyTitle("Chapter 4: CC");
+        CHECK(it1 == book2.getChapters().end());
         CHECK(book2.getTotalPages() == 75);
     }
 
@@ -152,11 +179,11 @@ TEST_CASE("book simple tests", "[book]")
         book1.addChapter(15, 100, "Chapter 15: BB");
         book1.addChapter(7, 100, "Chapter 7: CC");
         CHECK(book1.getChapters().size() == 5);
-        CHECK(book1.findChapterPosition("Chapter 1") == 0);
-        CHECK(book1.findChapterPosition("Chapter 2") == 1);
-        CHECK(book1.findChapterPosition("Chapter 7") == 2);
-        CHECK(book1.findChapterPosition("Chapter 15") == 3);
-        CHECK(book1.findChapterPosition("Chapter 20") == 4);
+        CHECK(book1.getChapters()[0].getChapterTitle() == "Chapter 1: JD");
+        CHECK(book1.getChapters()[1].getChapterTitle() == "Chapter 2: KD");
+        CHECK(book1.getChapters()[2].getChapterTitle() == "Chapter 7: CC");
+        CHECK(book1.getChapters()[3].getChapterTitle() == "Chapter 15: BB");
+        CHECK(book1.getChapters()[4].getChapterTitle() == "Chapter 20: AA");
     }
 
     SECTION("testing sorting chapters by their title")
@@ -169,12 +196,12 @@ TEST_CASE("book simple tests", "[book]")
         book1.addChapter(4, 100, "opr");
         book1.addChapter(5, 100, "abc");
         CHECK(book1.getChapters().size() == 3);
-        CHECK(book1.findChapterPosition("def") == 0);
-        CHECK(book1.findChapterPosition("opr") == 1);
-        CHECK(book1.findChapterPosition("abc") == 2);
+        CHECK(book1.getChapters()[0].getChapterTitle() == "def");
+        CHECK(book1.getChapters()[1].getChapterTitle() == "opr");
+        CHECK(book1.getChapters()[2].getChapterTitle() == "abc");
         book1.sortChaptersbyTitle();
-        CHECK(book1.findChapterPosition("abc") == 0);
-        CHECK(book1.findChapterPosition("def") == 1);
-        CHECK(book1.findChapterPosition("opr") == 2);
+        CHECK(book1.getChapters()[0].getChapterTitle() == "abc");
+        CHECK(book1.getChapters()[1].getChapterTitle() == "def");
+        CHECK(book1.getChapters()[2].getChapterTitle() == "opr");
     }
 }

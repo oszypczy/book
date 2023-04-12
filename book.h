@@ -23,7 +23,7 @@ class Book{
         unsigned long getISBN() const;
         std::string getPublisher() const;
         Date getDate() const;
-        std::vector<Chapter> getChapters() const;
+        std::vector<Chapter>& getChapters();
         std::string getReleasePlace() const;
         void setTitle(std::string newTitle);
         void setISBN(unsigned long newISBN);
@@ -34,17 +34,18 @@ class Book{
         bool operator>(const Book& secondBook) const;
         bool operator<=(const Book& secondBook) const;
         bool operator>=(const Book& secondBook) const;
+        bool operator==(const Book& secondBook) const;
+        bool operator!=(const Book& secondBook) const;
         uint getTotalPages() const;
-        short findChapterPosition(std::string key) const;
+        std::vector<Chapter>::iterator findChapterbyTitle(std::string key);
+        std::vector<Chapter>::iterator findChapterbyNumber(ushort number);
         ushort getNumChaptersWithKey(std::string key) const;
         void sortChaptersbyTitle();
         void sortChaptersbyNumber();
         void addChapter(ushort newNumber, uint newPages, std::string newTitle);
         void removeChapter(std::string key);
-        void editChapter(std::string key, ushort newNumber = 0, uint newPages = 0, std::string newTitle = "");
+        void editChapter(std::string key, ushort newNumber, uint newPages, std::string newTitle);
     friend std::ostream& operator<<(std::ostream& os, const Book& book);
 };
 
-// Czy wydawca to ma być też osobna klasa?
-// Czy miejsce wydania to też ma być osobna klasa?
-// We wszystkich klasach przeciążyć operatory "!=" , "==" ? (treść zadania inna niż pdf)?
+// We wszystkich klasach przeciążyć operatory "!=" , "=="?
