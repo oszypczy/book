@@ -33,6 +33,14 @@ void Author::setSurname(std::string newSurname) {
     surname = newSurname;
 }
 
+bool Author::operator==(const Author& secondAuthor) const {
+    return (name == secondAuthor.getName() && surname == secondAuthor.getSurname());
+}
+
+bool Author::operator!=(const Author& secondAuthor) const {
+    return !(*this == secondAuthor);
+}
+
 std::ostream& operator<<(std::ostream& os, const Author& author){
     os << "Author: " << author.name << " " << author.surname;
     return os;

@@ -61,10 +61,17 @@ void Date::setYear(int newYear) {
     year = newYear;
 }
 
-std::string Date::str() {
-    std::stringstream stream;
-    stream << std::setw(2) << std::setfill('0') << day << "."
-           << std::setw(2) << std::setfill('0') << static_cast<ushort>(month) << "."
-           << year;
-    return stream.str();
+bool Date::operator==(const Date& secondDate) const {
+    return day == secondDate.getDay() && month == secondDate.getMonth() && year == secondDate.getYear();
+}
+
+bool Date::operator!=(const Date& secondDate) const {
+    return !(*this == secondDate);
+}
+
+std::ostream& operator<<(std::ostream& os, const Date& date) {
+    os << std::setw(2) << std::setfill('0') << date.day << "."
+       << std::setw(2) << std::setfill('0') << static_cast<ushort>(date.month) << "."
+       << date.year;
+    return os;
 }

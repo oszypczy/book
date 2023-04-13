@@ -80,7 +80,7 @@ TEST_CASE("book simple tests", "[book]")
     SECTION("testing operators ==, !=")
     {
         CHECK((book1 == book1) == true);
-        CHECK((book1 != book1) == false);
+        CHECK((book1 != book2) == true);
     }
 
     SECTION("testing finding chapter by key - whole title")

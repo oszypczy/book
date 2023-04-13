@@ -12,5 +12,7 @@ class Author{
         std::string getSurname() const;
         void setName(std::string newName);
         void setSurname(std::string newSurname);
+        bool operator==(const Author& secondAuthor) const;
+        bool operator!=(const Author& secondAuthor) const;
     friend std::ostream& operator<<(std::ostream& os, const Author& author);
 };

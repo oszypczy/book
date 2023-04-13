@@ -68,28 +68,28 @@ Chapter Chapter::operator--(int){
     return temp;
 }
 
-bool Chapter::operator==(const Chapter& second_argument) const{
-    return (chapterPages == second_argument.chapterPages);
+bool Chapter::operator==(const Chapter& secondChapter) const{
+    return chapterNumber == secondChapter.chapterNumber && chapterPages == secondChapter.chapterPages && chapterTitle == secondChapter.chapterTitle;
 }
 
-bool Chapter::operator!=(const Chapter& second_argument) const{
-    return !(chapterPages == second_argument.chapterPages);
+bool Chapter::operator!=(const Chapter& secondChapter) const{
+    return !(secondChapter == *this);
 }
 
-bool Chapter::operator<(const Chapter& second_argument) const{
-    return (chapterPages < second_argument.chapterPages);
+bool Chapter::operator<(const Chapter& secondChapter) const{
+    return (chapterPages < secondChapter.chapterPages);
 }
 
-bool Chapter::operator>(const Chapter& second_argument) const{
-    return (chapterPages > second_argument.chapterPages);
+bool Chapter::operator>(const Chapter& secondChapter) const{
+    return (secondChapter < *this);
 }
 
-bool Chapter::operator<=(const Chapter& second_argument) const{
-    return !(chapterPages > second_argument.chapterPages);
+bool Chapter::operator<=(const Chapter& secondChapter) const{
+    return !(secondChapter < *this);
 }
 
-bool Chapter::operator>=(const Chapter& second_argument) const{
-    return !(chapterPages < second_argument.chapterPages);
+bool Chapter::operator>=(const Chapter& secondChapter) const{
+    return !(*this < secondChapter);
 }
 
 std::ostream& operator<<(std::ostream& os, const Chapter& chapter){

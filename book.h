@@ -47,5 +47,3 @@ class Book{
         void editChapter(std::string key, ushort newNumber, uint newPages, std::string newTitle);
     friend std::ostream& operator<<(std::ostream& os, const Book& book);
 };
-
-// We wszystkich klasach przeciążyć operatory "!=" , "=="?

@@ -19,5 +19,7 @@ class Date {
         void setDay(ushort newDay);
         void setMonth(Month newMonth);
         void setYear(int newYear);
-        std::string str();
+        bool operator==(const Date& secondDate) const;
+        bool operator!=(const Date& secondDate) const;
+    friend std::ostream& operator<<(std::ostream& os, const Date& date);
 };

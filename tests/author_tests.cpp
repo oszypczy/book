@@ -9,6 +9,10 @@ TEST_CASE("author simple tests", "[author]")
     CHECK(author.getName() == "Jan");
     CHECK(author.getSurname() == "Kowalski");
 
+    Author secondAuthor("Marek", "Nowak");
+    CHECK(secondAuthor.getName() == "Marek");
+    CHECK(secondAuthor.getSurname() == "Nowak");
+
     SECTION("testing valid setters")
     {
         author.setName("Adam");
@@ -23,5 +27,11 @@ TEST_CASE("author simple tests", "[author]")
         CHECK_THROWS_MATCHES(author.setSurname(""), std::invalid_argument, Catch::Matchers::Message("Surname cannot be empty!"));
         CHECK(author.getName() == "Jan");
         CHECK(author.getSurname() == "Kowalski");
+    }
+
+    SECTION("Testing == and != operators")
+    {
+        CHECK(author == author);
+        CHECK(author != secondAuthor);
     }
 }

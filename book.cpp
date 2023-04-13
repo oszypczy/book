@@ -131,7 +131,13 @@ bool Book::operator>=(const Book& secondBook) const {
 }
 
 bool Book::operator==(const Book& secondBook) const {
-    return (getTotalPages() == secondBook.getTotalPages());
+    return bookTitle == secondBook.bookTitle &&
+           bookAuthors == secondBook.bookAuthors &&
+           ISBN == secondBook.ISBN &&
+           bookPublisher == secondBook.bookPublisher &&
+           releaseDate == secondBook.releaseDate &&
+           releasePlace == secondBook.releasePlace &&
+           bookChapters == secondBook.bookChapters;
 }
 
 bool Book::operator!=(const Book& secondBook) const {
@@ -216,7 +222,7 @@ std::ostream& operator<<(std::ostream& os, const Book& book){
     }
     os << "Book Publisher: " << book.bookPublisher << "\n"
        << "Book release place: " << book.releasePlace << "\n"
-       << "Book release date: " << book.getDate().str() << "\n"
+       << "Book release date: " << book.releaseDate << "\n"
        << "Chapters: " << "\n";
     for (auto& chapter : book.bookChapters){
         os << "\t" << chapter << "\n";

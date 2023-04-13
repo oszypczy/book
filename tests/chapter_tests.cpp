@@ -57,6 +57,10 @@ TEST_CASE("chapter simple tests", "[chapter]")
     {
         chapter1.setChapterPages(100);
         chapter2.setChapterPages(100);
+        chapter1.setChapterTitle("Chapter: XD");
+        chapter2.setChapterTitle("Chapter: XD");
+        chapter1.setChapterNumber(10);
+        chapter2.setChapterNumber(10);
         CHECK((chapter1 == chapter2) == true);
     }
 

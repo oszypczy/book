@@ -10,10 +10,11 @@ TEST_CASE("date simple tests", "[date]")
     CHECK(date.getMonth() == Month::Mar);
     CHECK(date.getYear() == 2023);
 
-    SECTION("testing str() method")
-    {
-        CHECK(date.str() == "17.03.2023");
-    }
+    Date secondDate(17, Month::May, 2003);
+
+    CHECK(secondDate.getDay() == 17);
+    CHECK(secondDate.getMonth() == Month::May);
+    CHECK(secondDate.getYear() == 2003);
 
     SECTION("testing valid setters")
     {
@@ -53,5 +54,22 @@ TEST_CASE("date simple tests", "[date]")
         date.setYear(2007);
         date.setMonth(Month::Feb);
         CHECK_THROWS_MATCHES(date.setDay(29), std::domain_error, Catch::Matchers::Message("Given day is not valid"));
+    }
+
+    SECTION("testing << operator")
+    {
+        std::stringstream ss;
+        ss << date;
+        CHECK(ss.str() == "17.03.2023");
+    }
+
+    SECTION("testing == operator")
+    {
+        CHECK(date == date);
+    }
+
+    SECTION("testing != operator")
+    {
+        CHECK(date != secondDate);
     }
 }
